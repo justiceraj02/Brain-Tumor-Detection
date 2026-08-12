@@ -21,8 +21,23 @@ DRIVE_DIRECT = (
 )
 
 
+def download_model():
+    """Download the model file from Google Drive using gdown."""
+    try:
+        import gdown
+    except ImportError:
+        print("  Installing gdown...")
+        import subprocess
+        subprocess.check_call(["pip", "install", "gdown"])
+        import gdown
+
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"  ⬇️  Downloading model to {MODEL_PATH} ...")
+    gdown.download(DRIVE_DIRECT, str(MODEL_PATH), quiet=False)
+
+
 def check_model():
-    """Check if the model file exists and provide download instructions."""
+    """Check if the model file exists; download it if missing."""
     print("=" * 60)
     print("  \U0001f9e0 Brain Tumor Detection \u2014 Model Setup")
     print("=" * 60)
@@ -37,21 +52,27 @@ def check_model():
     else:
         print(f"  \u274c Model file NOT found at: {MODEL_PATH}")
         print()
-        print("  To download the model, follow these steps:")
+        print("  Attempting automatic download...")
         print()
-        print("  1. Open this link in your browser:")
-        print(f"     {DRIVE_URL}")
-        print()
-        print("  2. Click the download button in Google Drive.")
-        print()
-        print("  3. Save the file as:")
-        print(f"     {MODEL_PATH}")
-        print()
-        print("  Alternatively, if you have 'gdown' installed:")
-        print("     pip install gdown")
-        print(f"     gdown {DRIVE_DIRECT} -O \"{MODEL_PATH}\"")
-        print()
+        try:
+            download_model()
+            if MODEL_PATH.exists():
+                size_mb = MODEL_PATH.stat().st_size / (1024 * 1024)
+                print(f"\n  \u2705 Download complete! Size: {size_mb:.1f} MB")
+            else:
+                print("\n  \u274c Download may have failed. Manual steps:")
+                print(f"     1. Open: {DRIVE_URL}")
+                print("     2. Click download in Google Drive")
+                print(f"     3. Save as: {MODEL_PATH}")
+        except Exception as e:
+            print(f"\n  \u274c Auto-download failed: {e}")
+            print()
+            print("  Manual download steps:")
+            print(f"     1. Open: {DRIVE_URL}")
+            print("     2. Click download in Google Drive")
+            print(f"     3. Save as: {MODEL_PATH}")
 
+    print()
     print("=" * 60)
 
 
