@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Scan{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+
+        <div class="text-center mb-4" style="padding-top: 2rem;">
+            <span class="section-label">📤 Upload</span>
+            <h1 style="font-weight: 700; font-size: 2rem; margin-top: 0.5rem;">
+                Upload MRI Scan
+            </h1>
+            <p style="color: var(--text-secondary);">
+                Select a brain MRI image for tumor classification
+            </p>
+        </div>
+
+        <form
+            method="post"
+            action="{{ url_for('uimg') }}"
+            enctype="multipart/form-data"
+            id="uploadForm"
+        >
+            <div class="glass-card" style="padding: 2rem;">
+
+                <!-- Drag-and-drop zone -->
+                <div class="upload-zone" id="uploadZone">
+                    <input
+                        type="file"
+                        name="file"
+                        id="fileInput"
+                        accept=".png,.jpg,.jpeg"
+                        required
+                    >
+                    <div class="upload-icon">🧠</div>
+                    <h3>Drag &amp; Drop MRI Scan</h3>
+                    <p>or click to browse &middot; PNG, JPG, JPEG (max 16 MB)</p>
+                </div>
+
+                <!-- Image preview -->
+                <div class="preview-container" id="previewContainer">
+                    <img
+                        src=""
+                        alt="Image preview"
+                        class="preview-image"
+                        id="previewImage"
+                    >
+                    <p class="preview-filename" id="previewFilename"></p>
+                </div>
+
+                <!-- Submit -->
+                <div class="text-center mt-4">
+                    <button
+                        type="submit"
+                        class="btn-glow"
+                        id="submitBtn"
+                        style="width: 100%;"
+                    >
+                        🔬 Analyze Scan
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="disclaimer mt-4">
+            <span class="disclaimer-icon">💡</span>
+            <div>
+                <strong>Tip:</strong> For best results, upload a clear
+                T1-weighted contrast-enhanced MRI scan in axial view. The
+                model supports Glioma, Meningioma, and Pituitary tumor
+                classification.
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    /* Upload page interactivity */
+    (function () {
+        const zone       = document.getElementById('uploadZone');
+        const fileInput  = document.getElementById('fileInput');
+        const container  = document.getElementById('previewContainer');
+        const prevImg    = document.getElementById('previewImage');
+        const prevName   = document.getElementById('previewFilename');
+        const submitBtn  = document.getElementById('submitBtn');
+        const form       = document.getElementById('uploadForm');
+
+        /* ---- Drag-and-drop visual feedback ---- */
+        ['dragenter', 'dragover'].forEach(function (evt) {
+            zone.addEventListener(evt, function (e) {
+                e.preventDefault();
+                zone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(function (evt) {
+            zone.addEventListener(evt, function (e) {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+            });
+        });
+
+        zone.addEventListener('drop', function (e) {
+            var files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                showPreview(files[0]);
+            }
+        });
+
+        /* ---- File selection ---- */
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length) {
+                showPreview(fileInput.files[0]);
+            }
+        });
+
+        function showPreview(file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                prevImg.src = e.target.result;
+                prevName.textContent =
+                    file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+                container.classList.add('active');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /* ---- Loading state on submit ---- */
+        form.addEventListener('submit', function () {
+            submitBtn.innerHTML =
+                '<span style="animation: pulse 1s infinite">\u23f3</span> Analyzing\u2026';
+            submitBtn.disabled = true;
+        });
+    })();
+</script>
+{% endblock %}

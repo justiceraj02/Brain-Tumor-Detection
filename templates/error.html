@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<section class="error-section" id="error-section">
+    <div class="error-icon">❌</div>
+    <h1 class="error-title">Something Went Wrong</h1>
+    <p class="error-message" id="error-message">
+        {{ message | default('An unexpected error occurred. Please try again.') }}
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{{ url_for('uimg') }}" class="btn-glow" id="btn-retry">
+            🔄 Try Again
+        </a>
+        <a
+            href="{{ url_for('main') }}"
+            class="btn-glow"
+            id="btn-home"
+            style="background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: none;"
+        >
+            🏠 Back to Home
+        </a>
+    </div>
+</section>
+{% endblock %}

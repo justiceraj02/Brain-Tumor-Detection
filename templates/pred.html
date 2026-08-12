@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+
+        <!-- Result Card -->
+        <div
+            class="glass-card result-card {{ 'result-none' if result == 'None' else 'result-tumor' }}"
+            style="margin-top: 2rem;"
+            id="result-card"
+        >
+            {% if result == 'None' %}
+                <div class="result-icon">✅</div>
+                <div class="result-label">SCAN RESULT</div>
+                <div class="result-value" id="result-value">No Tumor Detected</div>
+                <span class="result-badge" id="result-badge">Healthy Scan</span>
+            {% else %}
+                <div class="result-icon">⚠️</div>
+                <div class="result-label">TUMOR DETECTED</div>
+                <div class="result-value" id="result-value">{{ result }} Tumor</div>
+                <span class="result-badge" id="result-badge">Classification Result</span>
+            {% endif %}
+
+            <!-- Confidence bar -->
+            <div class="confidence-section mt-4" id="confidence-section">
+                <div class="confidence-label">
+                    <span>Confidence</span>
+                    <span id="confidence-pct">{{ confidence }}%</span>
+                </div>
+                <div class="confidence-bar">
+                    <div
+                        class="confidence-fill"
+                        style="width: {{ confidence }}%;"
+                        id="confidence-fill"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                <a href="{{ url_for('uimg') }}" class="btn-glow" id="btn-retry">
+                    🔄 Scan Another Image
+                </a>
+                <a
+                    href="{{ url_for('main') }}"
+                    class="btn-glow"
+                    id="btn-home"
+                    style="background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: none;"
+                >
+                    🏠 Back to Home
+                </a>
+            </div>
+        </div>
+
+        <!-- Medical Disclaimer -->
+        <div class="disclaimer mt-4" id="result-disclaimer">
+            <span class="disclaimer-icon">⚠️</span>
+            <div>
+                <strong>Medical Disclaimer:</strong> This result is generated
+                by an AI model for <em>educational purposes only</em>. It
+                should <strong>NOT</strong> be used as a medical diagnosis.
+                Please consult a qualified radiologist or neurologist for
+                clinical interpretation.
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

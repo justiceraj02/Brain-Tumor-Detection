@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" id="hero">
+    <span class="hero-badge">🔬 AI-Powered Detection</span>
+
+    <h1 class="hero-title">
+        Detect <span class="gradient-text">Brain Tumors</span><br>
+        with Deep Learning
+    </h1>
+
+    <p class="hero-subtitle">
+        Upload an MRI scan and get instant classification powered by a
+        fine-tuned ResNet50 model achieving <strong>99.3&percnt; accuracy</strong>.
+    </p>
+
+    <img
+        src="{{ url_for('static', filename='b.jpg') }}"
+        alt="Brain MRI scan example"
+        class="hero-image"
+        id="hero-mri-image"
+    >
+
+    <div>
+        <a href="{{ url_for('uimg') }}" class="btn-glow" id="cta-detect">
+            🔍 Analyze MRI Scan
+        </a>
+    </div>
+</section>
+
+<!-- Detectable Tumor Types -->
+<section class="my-5" id="tumor-types">
+    <div class="text-center mb-4">
+        <span class="section-label">📋 Detectable Tumor Types</span>
+        <h2 class="mt-2" style="font-weight: 700; font-size: 1.8rem;">
+            What Can We Detect?
+        </h2>
+    </div>
+
+    <div class="info-grid">
+        <div class="glass-card info-card" id="card-glioma">
+            <div class="card-icon">🔴</div>
+            <h3>Glioma</h3>
+            <p>
+                Arises from glial cells in the brain. The most common and
+                aggressive primary brain tumor type, requiring prompt
+                medical attention.
+            </p>
+        </div>
+
+        <div class="glass-card info-card" id="card-meningioma">
+            <div class="card-icon">🟡</div>
+            <h3>Meningioma</h3>
+            <p>
+                Grows from the meninges &mdash; membranes surrounding the
+                brain and spinal cord. Often benign and slow-growing, but
+                may require monitoring.
+            </p>
+        </div>
+
+        <div class="glass-card info-card" id="card-pituitary">
+            <div class="card-icon">🟢</div>
+            <h3>Pituitary Tumor</h3>
+            <p>
+                Forms on the pituitary gland at the base of the brain.
+                Usually slow-growing and benign, but can affect hormone
+                production.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Symptoms -->
+<section class="my-5" id="symptoms">
+    <div class="text-center mb-4">
+        <span class="section-label">⚡ Key Symptoms</span>
+        <h2 class="mt-2" style="font-weight: 700; font-size: 1.8rem;">
+            Common Warning Signs
+        </h2>
+    </div>
+
+    <ul class="symptoms-list" id="symptoms-list">
+        <li><span class="symptom-dot"></span> Persistent headaches</li>
+        <li><span class="symptom-dot"></span> Seizures or convulsions</li>
+        <li><span class="symptom-dot"></span> Difficulty thinking or speaking</li>
+        <li><span class="symptom-dot"></span> Personality or behavior changes</li>
+        <li><span class="symptom-dot"></span> Weakness or numbness</li>
+        <li><span class="symptom-dot"></span> Loss of balance or dizziness</li>
+        <li><span class="symptom-dot"></span> Hearing or vision changes</li>
+        <li><span class="symptom-dot"></span> Nausea or vomiting</li>
+    </ul>
+</section>
+
+<!-- Medical Disclaimer -->
+<div class="disclaimer mx-auto" style="max-width: 700px;" id="disclaimer">
+    <span class="disclaimer-icon">⚠️</span>
+    <div>
+        <strong>Medical Disclaimer:</strong> This tool is for educational
+        and research purposes only. It is not a substitute for professional
+        medical diagnosis. Always consult a qualified radiologist or medical
+        professional.
+    </div>
+</div>
+{% endblock %}
